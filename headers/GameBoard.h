@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stack>
+#include <iostream>
 
 #include "Piece.h"
 #include "King.h"
@@ -10,10 +11,11 @@
 #include "Rook.h"
 #include "Knight.h"
 
+void error(string message);
+
 class GameBoard{
     private:
         Piece* Board[DIM][DIM];
-        Piece COPY_BOARD[DIM][DIM];
         stack<vector<int>> moves_stack;
         bool isWhiteTurn;
     public:
