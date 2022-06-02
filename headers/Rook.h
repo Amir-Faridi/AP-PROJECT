@@ -7,6 +7,6 @@ class Rook : public Piece{
         bool isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]);
         vector<int> AllMoves(int curRow, int curCol, Piece* Board[DIM][DIM]);
     public:
-        Rook(char color, bool stat) : Piece(color, 'R', stat) {}
-        ~Rook() {}
+        Rook(char color, bool stat);
+        ~Rook();
 };

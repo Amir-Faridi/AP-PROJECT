@@ -1,4 +1,4 @@
-#pragma once
+
 #include "../headers/Knight.h"
 
 bool Knight::isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]) {

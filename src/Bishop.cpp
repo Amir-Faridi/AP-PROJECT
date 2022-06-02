@@ -1,4 +1,4 @@
-#pragma once
+
 #include "../headers/Bishop.h"
 
 bool Bishop::isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]){

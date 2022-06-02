@@ -13,7 +13,6 @@
 #include "Knight.h"
 
 void error(string message);
-
 class GameBoard{
     private:
         Piece* Board[DIM][DIM];

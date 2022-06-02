@@ -1,4 +1,4 @@
-#pragma once
+
 #include "../headers/King.h"
 
 bool King::isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]){

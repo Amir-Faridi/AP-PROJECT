@@ -1,4 +1,4 @@
-#pragma once
+
 #include "../headers/GameBoard.h"
 
 map<int, char> convertIC = { {0, 'a'}, {1, 'b'}, {2, 'c'}, {3, 'd'}, {4, 'e'}, {5, 'f'}, {6, 'g'}, {7, 'h'} };
@@ -36,6 +36,7 @@ GameBoard::GameBoard(){
                 error("[ERROR]... Invalid input.");
         }
     }
+    Display_Board();
 }
 
 GameBoard::~GameBoard(){

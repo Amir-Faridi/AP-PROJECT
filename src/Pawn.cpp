@@ -1,4 +1,3 @@
-#pragma once
 #include "../headers/Pawn.h"
 
 bool Pawn::isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]){

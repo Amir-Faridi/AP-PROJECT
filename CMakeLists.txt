@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(SRC_DIRECTORY src)
 set(INCLUDE_DIRECTORY headers)
 
-set(SOURCE
+set(SOURCES
 	${SRC_DIRECTORY}/Piece.cpp
 	${SRC_DIRECTORY}/King.cpp
 	${SRC_DIRECTORY}/Bishop.cpp
