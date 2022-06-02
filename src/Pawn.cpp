@@ -39,3 +39,6 @@ vector<int> Pawn::AllMoves(int curRow, int curCol, Piece* Board[DIM][DIM]){
     }
     return moves;
 }
+
+Pawn::Pawn(char color, bool stat) : Piece(color, 'P', stat) {}
+Pawn::~Pawn() {}
