@@ -9,6 +9,6 @@ class Knight : public Piece{
         bool isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]);
         vector<int> AllMoves(int curRow, int curCol, Piece* Board[DIM][DIM]);
     public:
-        Knight(char color, bool stat) : Piece(color, 'N', stat) {}
-        ~Knight() {}
+        Knight(char color, bool stat);
+        ~Knight();
 };

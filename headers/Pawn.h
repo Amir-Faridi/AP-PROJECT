@@ -7,6 +7,6 @@ class Pawn : public Piece{
         bool isValidMove(int curRow, int curCol, int row, int col, Piece* Board[DIM][DIM]);
         vector<int> AllMoves(int curRow, int curCol, Piece* Board[DIM][DIM]);
     public:
-        Pawn(char color, bool stat) : Piece(color, 'P', stat) {}
-        ~Pawn() {}
+        Pawn(char color, bool stat);
+        ~Pawn();
 };
