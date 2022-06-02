@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stack>
+#include <map>
 #include <iostream>
 
 #include "Piece.h"
