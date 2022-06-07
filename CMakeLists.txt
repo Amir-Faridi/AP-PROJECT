@@ -21,3 +21,5 @@ include_directories(${INCLUDE_DIRECTORY})
 add_executable(${PROJECT_NAME}
 	${SRC_DIRECTORY}/main.cpp
 	${SOURCES})
+
+target_link_libraries(${Chess} sfml-graphics sfml-window sfml-system)
