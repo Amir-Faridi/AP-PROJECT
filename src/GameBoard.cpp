@@ -4,39 +4,40 @@
 map<int, char> convertIC = { {0, 'a'}, {1, 'b'}, {2, 'c'}, {3, 'd'}, {4, 'e'}, {5, 'f'}, {6, 'g'}, {7, 'h'} };
 map<char, int> convertCI = { {'a', 0}, {'b', 1}, {'c', 2}, {'d', 3}, {'e', 4}, {'f', 5}, {'g', 6}, {'h', 7} };
 
-void error(string message){
-    cerr << message << endl;
-    abort();
-}
-
 GameBoard::GameBoard(){
-    char color, Mode;
-    cin >> color >> Mode;
-    isWhiteTurn = (color == 'W') ? true : false;
+    selected_piece;
+    isWhiteTurn = true;
+    for(int C = 0; C < 8; C++)
+        this->Board[6][C] = new Pawn('W', true);
 
-    string inp = "";
-    for(int R = 0; R < DIM; R++){
-        for(int C = 0; C < DIM; C++){
-            cin >> inp;
-            if(inp == "--")
-                Board[R][C] = new Piece('X', 'X', false);
-            else if(inp[0] == 'N')
-                Board[R][C] = new Knight(inp[1], true);
-            else if(inp[0] == 'R')
-                Board[R][C] = new Rook(inp[1], true);
-            else if(inp[0] == 'B')
-                Board[R][C] = new Bishop(inp[1], true);
-            else if(inp[0] == 'K')
-                Board[R][C] = new King(inp[1], true);
-            else if(inp[0] == 'Q')
-                Board[R][C] = new Queen(inp[1], true);
-            else if(inp[0] == 'P')
-                Board[R][C] = new Pawn(inp[1], true);
-            else
-                error("[ERROR]... Invalid input.");
-        }
-    }
-    Display_Board();
+    for(int C = 0; C < 8; C++)
+        this->Board[1][C] = new Pawn('B', true);
+    
+    this->Board[7][0] = new Rook('W', true);
+    this->Board[7][1] = new Knight('W', true);
+    this->Board[7][2] = new Bishop('W', true);
+    this->Board[7][3] = new Queen('W', true);
+    this->Board[7][4] = new King('W', true);
+    this->Board[7][5] = new Bishop('W', true);
+    this->Board[7][6] = new Knight('W', true);
+    this->Board[7][7] = new Rook('W', true);
+
+    this->Board[0][0] = new Rook('B', true);
+    this->Board[0][1] = new Knight('B', true);
+    this->Board[0][2] = new Bishop('B', true);
+    this->Board[0][3] = new Queen('B', true);
+    this->Board[0][4] = new King('B', true);
+    this->Board[0][5] = new Bishop('B', true);
+    this->Board[0][6] = new Knight('B', true);
+    this->Board[0][7] = new Rook('B', true);
+
+    for(int R = 2; R < 6; R++)
+        for(int C = 0; C < 8; C++)
+            this->Board[R][C] = new Piece('X', 'X', false);
+
+    dummy = new Piece('X', 'X', false);
+    selected_piece = dummy;
+    this->window->setFramerateLimit(60);
 }
 
 GameBoard::~GameBoard(){
@@ -74,6 +75,8 @@ void GameBoard::undo_move(){
 }
 
 void GameBoard::switchTurns(){ isWhiteTurn = !isWhiteTurn; }
+
+bool GameBoard::isGameOver(){ return isCheckMate('W') && isCheckMate('B'); }
 
 bool GameBoard::isCheckMate(char color){ return (isInCheck(color) && !hasAnyMoves(color)); }
 
@@ -135,4 +138,74 @@ bool GameBoard::isInCheck(char color){
                     if(Board[i][j]->isValidMove(i, j, R, C, Board))
                         return true;
     return false;
+}
+
+void GameBoard::init(){
+    this->cells.resize(8);
+    for(int R = 0; R < 8; R++){
+        this->cells[R].resize(8);
+        for(int C = 0; C < 8; C++){
+            
+            this->cells[R][C].rect.setPosition(sf::Vector2f(C * 100, R * 100));
+            this->cells[R][C].rect.setSize(sf::Vector2f(100, 100));
+            if((R + C) % 2 == 1)
+                this->cells[R][C].rect.setFillColor(sf::Color::Cyan);
+            else
+                this->cells[R][C].rect.setFillColor(sf::Color::Magenta);
+            this->cells[R][C].rect.setOutlineColor(sf::Color::Black);
+            this->cells[R][C].rect.setOutlineThickness(1);
+        }
+    }
+}
+
+void GameBoard::draw(){
+    for(int R = 0; R < 8; R++){
+        for(int C = 0; C < 8; C++){
+            window->draw(this->cells[R][C].rect);
+            if(Board[R][C]->is_alive())
+                Board[R][C]->set_sprite(cells[R][C], *(this->window));
+        }
+    }
+}
+
+void GameBoard::play(){
+    while(window->isOpen()){
+        sf::Event event;
+        while(window->pollEvent(event)){
+            if(event.type == sf::Event::Closed)
+                window->close();
+            if(event.type == sf::Event::MouseButtonPressed){
+                if(event.mouseButton.button == sf::Mouse::Left){
+                    int R = event.mouseButton.y / 100, C = event.mouseButton.x / 100;
+                    if(isWhiteTurn){
+                        if(Board[R][C]->get_color() == 'W'){
+                            if(Board[R][C]->isValidMove(R, C, R, C, Board)){
+                                if(move(R*DIM + C, R*DIM + C)){
+                                    if(isInCheck('W'))
+                                        cout << "WHITE IS IN CHECK" << endl;
+                                    else
+                                        cout << "WHITE IS NOT IN CHECK" << endl;
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        if(Board[R][C]->get_color() == 'B'){
+                            if(Board[R][C]->isValidMove(R, C, R, C, Board)){
+                                if(move(R*DIM + C, R*DIM + C)){
+                                    if(isInCheck('B'))
+                                        cout << "BLACK IS IN CHECK" << endl;
+                                    else
+                                        cout << "BLACK IS NOT IN CHECK" << endl;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        window->clear();
+        draw();
+        window->display();
+    }
 }
