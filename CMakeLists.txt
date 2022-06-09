@@ -22,4 +22,4 @@ add_executable(${PROJECT_NAME}
 	${SRC_DIRECTORY}/main.cpp
 	${SOURCES})
 
-target_link_libraries(${Chess} sfml-graphics sfml-window sfml-system)
+target_link_libraries(${PROJECT_NAME} sfml-system sfml-window sfml-graphics)

@@ -1,7 +1,6 @@
-
-#include <sstream>
-#include <iostream>
 #include "../headers/Piece.h"
+
+
 
 void error(string message){
     cerr << message << endl;

@@ -2,21 +2,23 @@
 
 #include <string>
 #include <vector>
-
+#include <sstream>
+#include <iostream>
+#include <stack>
+#include <map>
 #include <SFML/Graphics.hpp>
-
 using namespace std;
 
 const int DIM = 8;
 const int cell_size = 100;
 
+class Cell;
 void error(string message);
 typedef typename std::vector<std::vector<Cell>> Cells;
 class Cell{
     public:
         sf::RectangleShape rect;
         bool isAccupied = false;
-        Piece* piece;
 };
 
 class Piece{

@@ -1,9 +1,5 @@
 #pragma once
 
-#include <stack>
-#include <map>
-#include <iostream>
-
 #include "Piece.h"
 #include "King.h"
 #include "Queen.h"
@@ -28,7 +24,7 @@ class GameBoard{
         Piece* selected_piece;
         Piece* dummy;
     public:
-        GameBoard();
+        GameBoard(sf::RenderWindow* _window);
         ~GameBoard();
 
         bool isCheckMate(char color);
@@ -41,6 +37,7 @@ class GameBoard{
         void Display_Board();
         void undo_move();
 
+        void reset();
         void init();
         void draw();
         void play();
