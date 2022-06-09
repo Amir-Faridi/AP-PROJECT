@@ -221,7 +221,7 @@ void GameBoard::process_event(sf::Event event){
 
             if(move(start, end)) CheckKingStatus();
             else cout << "Invalid move!" << "\n";
-            
+
             reset();
             Display_Board();
             draw();
@@ -243,3 +243,4 @@ void GameBoard::play(){
         this->window->display();
     }
 }
+
