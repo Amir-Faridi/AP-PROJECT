@@ -37,6 +37,8 @@ class GameBoard{
         void Display_Board();
         void undo_move();
         void show_moves(int R, int C);
+        void process_event(sf::Event event);
+        void CheckKingStatus();
 
         void reset();
         void init();

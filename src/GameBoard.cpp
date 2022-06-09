@@ -187,17 +187,57 @@ void GameBoard::show_moves(int R, int C){
     }
 }
 
+void GameBoard::CheckKingStatus(){
+    char turn = isWhiteTurn ? 'W' : 'B';
+    if(!isInCheck(turn)) return;
+
+    if(isCheckMate(turn)){ cout << "Checkmate! " << (turn == 'W' ? "Black" : "White") << " wins!" << endl; window->close(); }
+    cout << "Check!\n";
+    int kingRow = -1, kingCol = -1;
+    for(int R = 0; R < DIM; R++)
+        for(int C = 0; C < DIM; C++)
+            if(Board[R][C]->get_type() == 'K' && Board[R][C]->get_color() == turn){ kingRow = R; kingCol = C; }
+    
+    if(kingRow == -1 || kingCol == -1) error("King not found...");
+    cells[kingRow][kingCol].rect.setFillColor(sf::Color(255, 0, 0));
+}
+
+void GameBoard::process_event(sf::Event event){
+    if(event.type == sf::Event::Closed)
+        window->close();
+    
+    if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+        int start = -1, end = -1;
+        int pressed_row = -1, pressed_col = -1;
+        char turn = isWhiteTurn ? 'W' : 'B';
+        if(Board[pressed_row][pressed_col]->is_alive() && Board[pressed_row][pressed_col]->get_color() == turn){
+            reset();
+            selected_piece = Board[pressed_row][pressed_col];
+            show_moves(pressed_row, pressed_col);
+            start = pressed_row * DIM + pressed_col; 
+        }
+        else if(selected_piece != nullptr){
+            end = pressed_row * DIM + pressed_col;
+
+            if(move(start, end)) CheckKingStatus();
+            else cout << "Invalid move!" << "\n";
+            
+            reset();
+            Display_Board();
+            draw();
+            window->display();
+        }
+    }
+}
+
 void GameBoard::play(){
     this->init();
     this->window->display();
     while(this->window->isOpen()){
         sf::Event event;
-        while(this->window->pollEvent(event)){
-            if(event.type == sf::Event::Closed)
-                this->window->close();
-            
-            
-        }
+        while(this->window->pollEvent(event))
+            process_event(event);
+
         this->window->clear();
         this->draw();
         this->window->display();
