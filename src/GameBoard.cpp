@@ -203,11 +203,30 @@ void GameBoard::CheckKingStatus(){
     cells[kingRow][kingCol].rect.setFillColor(sf::Color(255, 0, 0));
 }
 
+void GameBoard::PrintBoard(){
+    reset();
+    Display_Board();
+    draw();
+    window->display();
+}
+
+void GameBoard::restart_game(){
+    while(!moves_stack.empty())
+        undo_move();
+}
+
 void GameBoard::process_event(sf::Event event){
-    if(event.type == sf::Event::Closed)
-        window->close();
+    if(event.type == sf::Event::Closed) window->close();
     
-    if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
+    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) window->close();
+
+    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) { switchTurns(); PrintBoard(); }
+
+    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z) { undo_move(); PrintBoard(); }
+    
+    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) { restart_game(); PrintBoard(); }
+    
+    else if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
         static int start, end;
         int pressed_row = event.mouseButton.y / 100, pressed_col = event.mouseButton.x / 100;
         cout << "Pressed: " << pressed_row << " " << pressed_col << endl;
@@ -221,13 +240,8 @@ void GameBoard::process_event(sf::Event event){
         else if(selected_piece != nullptr){
             end = pressed_row * DIM + pressed_col;
 
-            if(move(start, end)) CheckKingStatus();
-            else cout << "Invalid move!" << "\n";
-
-            reset();
-            Display_Board();
-            draw();
-            window->display();
+            if(move(start, end)) { CheckKingStatus(); PrintBoard(); }
+            else { cout << "Invalid move!" << "\n"; PrintBoard(); }
         }
     }
 }
@@ -240,9 +254,9 @@ void GameBoard::play(){
         while(this->window->pollEvent(event))
             process_event(event);
 
-        this->window->clear();
-        this->draw();
-        this->window->display();
+        window->clear();
+        draw();
+        window->display();
     }
 }
 
