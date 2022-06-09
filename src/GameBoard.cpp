@@ -4,7 +4,7 @@ map<int, char> convertIC = { {0, 'a'}, {1, 'b'}, {2, 'c'}, {3, 'd'}, {4, 'e'}, {
 map<char, int> convertCI = { {'a', 0}, {'b', 1}, {'c', 2}, {'d', 3}, {'e', 4}, {'f', 5}, {'g', 6}, {'h', 7} };
 
 GameBoard::GameBoard(sf::RenderWindow* _window) : window(_window){
-    selected_piece;
+    selected_piece = nullptr;
     isWhiteTurn = true;
     for(int C = 0; C < 8; C++)
         Board[6][C] = new Pawn('W', true);
@@ -33,8 +33,6 @@ GameBoard::GameBoard(sf::RenderWindow* _window) : window(_window){
         for(int C = 0; C < 8; C++)
             this->Board[R][C] = new Piece('X', 'X', false);
 
-    dummy = new Piece('X', 'X', false);
-    selected_piece = dummy;
     this->window->setFramerateLimit(60);
 }
 
@@ -169,11 +167,23 @@ void GameBoard::draw(){
 void GameBoard::reset(){
     for(int R = 0; R < DIM; R++){
         for(int C = 0; C < DIM; C++){
-            if((R + C) % 2 == 1)
-                this->cells[R][C].rect.setFillColor(sf::Color::Cyan);
-            else
-                this->cells[R][C].rect.setFillColor(sf::Color::Magenta);
+            if((R + C) % 2 == 1) this->cells[R][C].rect.setFillColor(sf::Color::Cyan);
+            else this->cells[R][C].rect.setFillColor(sf::Color::Magenta);
+
+            if(Board[R][C]->get_type() == 'K'){
+                char color = Board[R][C]->get_color();
+                if(isInCheck(color))
+                    this->cells[R][C].rect.setFillColor(sf::Color::Red);
+            }
         }
+    }
+}
+
+void GameBoard::show_moves(int R, int C){
+    vector<int> moves = selected_piece->AllMoves(R, C, Board);
+    for(int M = 0; M < moves.size(); M++){
+        int row = moves[M] / DIM, col = moves[M] % DIM;
+        this->cells[row][col].rect.setFillColor(sf::Color(100, 100, 100));
     }
 }
 

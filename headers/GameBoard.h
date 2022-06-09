@@ -36,6 +36,7 @@ class GameBoard{
         void switchTurns();
         void Display_Board();
         void undo_move();
+        void show_moves(int R, int C);
 
         void reset();
         void init();
