@@ -165,6 +165,7 @@ void GameBoard::draw(){
 }
 
 void GameBoard::reset(){
+    selected_piece = nullptr;
     for(int R = 0; R < DIM; R++){
         for(int C = 0; C < DIM; C++){
             if((R + C) % 2 == 1) this->cells[R][C].rect.setFillColor(sf::Color::Cyan);
@@ -207,8 +208,9 @@ void GameBoard::process_event(sf::Event event){
         window->close();
     
     if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
-        int start = -1, end = -1;
-        int pressed_row = -1, pressed_col = -1;
+        static int start, end;
+        int pressed_row = event.mouseButton.y / 100, pressed_col = event.mouseButton.x / 100;
+        cout << "Pressed: " << pressed_row << " " << pressed_col << endl;
         char turn = isWhiteTurn ? 'W' : 'B';
         if(Board[pressed_row][pressed_col]->is_alive() && Board[pressed_row][pressed_col]->get_color() == turn){
             reset();
