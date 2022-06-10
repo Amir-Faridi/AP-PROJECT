@@ -192,7 +192,6 @@ void GameBoard::CheckKingStatus(){
     char turn = isWhiteTurn ? 'W' : 'B';
     if(!isInCheck(turn)) return;
 
-    if(isCheckMate(turn)){ cout << "Checkmate! " << (turn == 'W' ? "Black" : "White") << " wins!" << endl; window->close(); }
     cout << "Check!\n";
     int kingRow = -1, kingCol = -1;
     for(int R = 0; R < DIM; R++)
@@ -200,7 +199,9 @@ void GameBoard::CheckKingStatus(){
             if(Board[R][C]->get_type() == 'K' && Board[R][C]->get_color() == turn){ kingRow = R; kingCol = C; }
     
     if(kingRow == -1 || kingCol == -1) error("King not found...");
-    cells[kingRow][kingCol].rect.setFillColor(sf::Color(255, 0, 0));
+
+    cells[kingRow][kingCol].rect.setFillColor(sf::Color(100,200, 0));
+    if(isCheckMate(turn)){ cout << "Checkmate! " << (turn == 'W' ? "Black" : "White") << " wins!" << endl; cells[kingRow][kingCol].rect.setFillColor(sf::Color::Red);  }
 }
 
 void GameBoard::PrintBoard(){
@@ -259,4 +260,3 @@ void GameBoard::play(){
         window->display();
     }
 }
-
